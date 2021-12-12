@@ -3,75 +3,75 @@
 
 /* R-Type Instructions */
 #define INSTR_ADD_SUB_SLL_SLT_SLTU_XOR_SRL_SRA_OR_AND_MUL_MULH_MULHSU_MULHU_DIV_DIVU_REM_REMU 0x33
-    #define FUNC3_INSTR_ADD_SUB_MUL 0x0
-        #define FUNC7_INSTR_ADD 0x00
-        #define FUNC7_INSTR_MUL 0x01
-        #define FUNC7_INSTR_SUB 0x20
-    #define FUNC3_INSTR_SLL_MULH 0x1
-        #define FUNC7_INSTR_SLL 0x00
-        #define FUNC7_INSTR_MULH 0x01
-    #define FUNC3_INSTR_SLT_MULHSU 0x2
-        #define FUNC7_INSTR_SLT 0x00
-        #define FUNC7_INSTR_MULHSU 0x01
-    #define FUNC3_INSTR_SLTU_MULHU 0x3
-        #define FUNC7_INSTR_SLTU 0x00
-        #define FUNC7_INSTR_MULHU 0x01
-    #define FUNC3_INSTR_XOR_DIV 0x4
-        #define FUNC7_INSTR_XOR 0x00
-        #define FUNC7_INSTR_DIV 0x01
-    #define FUNC3_INSTR_SRL_SRA_DIVU 0x5
-        #define FUNC7_INSTR_SRL 0x00
-        #define FUNC7_INSTR_SRA 0x20
-        #define FUNC7_INSTR_DIVU 0x01
-    #define FUNC3_INSTR_OR_REM 0x6
-        #define FUNC7_INSTR_OR 0x00
-        #define FUNC7_INSTR_REM 0x01
-    #define FUNC3_INSTR_AND_REMU 0x7
-        #define FUNC7_INSTR_AND 0x00
-        #define FUNC7_INSTR_REMU 0x01
+#define FUNC3_INSTR_ADD_SUB_MUL 0x0
+#define FUNC7_INSTR_ADD 0x00
+#define FUNC7_INSTR_MUL 0x01
+#define FUNC7_INSTR_SUB 0x20
+#define FUNC3_INSTR_SLL_MULH 0x1
+#define FUNC7_INSTR_SLL 0x00
+#define FUNC7_INSTR_MULH 0x01
+#define FUNC3_INSTR_SLT_MULHSU 0x2
+#define FUNC7_INSTR_SLT 0x00
+#define FUNC7_INSTR_MULHSU 0x01
+#define FUNC3_INSTR_SLTU_MULHU 0x3
+#define FUNC7_INSTR_SLTU 0x00
+#define FUNC7_INSTR_MULHU 0x01
+#define FUNC3_INSTR_XOR_DIV 0x4
+#define FUNC7_INSTR_XOR 0x00
+#define FUNC7_INSTR_DIV 0x01
+#define FUNC3_INSTR_SRL_SRA_DIVU 0x5
+#define FUNC7_INSTR_SRL 0x00
+#define FUNC7_INSTR_SRA 0x20
+#define FUNC7_INSTR_DIVU 0x01
+#define FUNC3_INSTR_OR_REM 0x6
+#define FUNC7_INSTR_OR 0x00
+#define FUNC7_INSTR_REM 0x01
+#define FUNC3_INSTR_AND_REMU 0x7
+#define FUNC7_INSTR_AND 0x00
+#define FUNC7_INSTR_REMU 0x01
 
 /* I-Type Instructions */
 #define INSTR_JALR 0x67
-    #define FUNC3_INSTR_JALR    0x0
+#define FUNC3_INSTR_JALR    0x0
 
 #define INSTR_ADDI_SLTI_SLTIU_XORI_ORI_ANDI_SLLI_SRLI_SRAI 0x13
-    #define FUNC3_INSTR_ADDI    0x0
-    #define FUNC3_INSTR_SLTI    0x2
-    #define FUNC3_INSTR_SLTIU 0x3
-    #define FUNC3_INSTR_XORI    0x4
-    #define FUNC3_INSTR_ORI     0x6
-    #define FUNC3_INSTR_ANDI    0x7
-    #define FUNC3_INSTR_SLLI    0x1
-    #define FUNC3_INSTR_SRLI_SRAI  0x5
-        #define FUNC7_INSTR_SRLI 0x0
-        #define FUNC7_INSTR_SRAI 0x20
-        #define FUNC6_INSTR_SRLI 0x0
-        #define FUNC6_INSTR_SRAI 0x10
+#define FUNC3_INSTR_ADDI    0x0
+#define FUNC3_INSTR_SLTI    0x2
+#define FUNC3_INSTR_SLTIU 0x3
+#define FUNC3_INSTR_XORI    0x4
+#define FUNC3_INSTR_ORI     0x6
+#define FUNC3_INSTR_ANDI    0x7
+#define FUNC3_INSTR_SLLI    0x1
+#define FUNC3_INSTR_SRLI_SRAI  0x5
+#define FUNC7_INSTR_SRLI 0x0
+#define FUNC7_INSTR_SRAI 0x20
+#define FUNC6_INSTR_SRLI 0x0
+#define FUNC6_INSTR_SRAI 0x10
 
 #define INSTR_LB_LH_LW_LBU_LHU_LWU_LD 0x03
-    #define FUNC3_INSTR_LB 0x0
-    #define FUNC3_INSTR_LH 0x1
-    #define FUNC3_INSTR_LW 0x2
-    #define FUNC3_INSTR_LBU 0x4
-    #define FUNC3_INSTR_LHU 0x5
-    #define FUNC3_INSTR_LWU 0x6
-    #define FUNC3_INSTR_LD 0x3
+#define FUNC3_INSTR_LB 0x0
+#define FUNC3_INSTR_LH 0x1
+#define FUNC3_INSTR_LW 0x2
+#define FUNC3_INSTR_LBU 0x4
+#define FUNC3_INSTR_LHU 0x5
+#define FUNC3_INSTR_LWU 0x6
+#define FUNC3_INSTR_LD 0x3
 
 /* S-Type Instructions */
 #define INSTR_SB_SH_SW_SD 0x23
-    #define FUNC3_INSTR_SB 0x0
-    #define FUNC3_INSTR_SH 0x1
-    #define FUNC3_INSTR_SW 0x2
-    #define FUNC3_INSTR_SD 0x3
+#define FUNC3_INSTR_SB 0x0
+#define FUNC3_INSTR_SH 0x1
+#define FUNC3_INSTR_SW 0x2
+#define FUNC3_INSTR_SD 0x3
 
 /* B-Type Instructions */
 #define INSTR_BEQ_BNE_BLT_BGE_BLTU_BGEU 0x63
-    #define FUNC3_INSTR_BEQ 0x0
-    #define FUNC3_INSTR_BNE 0x1
-    #define FUNC3_INSTR_BLT 0x4
-    #define FUNC3_INSTR_BGE 0x5
-    #define FUNC3_INSTR_BLTU 0x6
-    #define FUNC3_INSTR_BGEU 0x7
+#define FUNC3_INSTR_BEQ 0x0
+#define FUNC3_INSTR_BNE 0x1
+#define FUNC3_INSTR_BLT 0x4
+#define FUNC3_INSTR_BGE 0x5
+#define FUNC3_INSTR_BLTU 0x6
+#define FUNC3_INSTR_BGEU 0x7
 
 /* U-Type Instructions */
 #define INSTR_LUI 0x37   /* LOAD UPPER IMMEDIATE INTO DESTINATION REGISTER */
@@ -82,64 +82,182 @@
 
 /* System level instructions */
 #define INSTR_FENCE_FENCE_I 0x0F
-    #define FUNC3_INSTR_FENCE 0x0
-    #define FUNC3_INSTR_FENCE_I 0x1
+#define FUNC3_INSTR_FENCE 0x0
+#define FUNC3_INSTR_FENCE_I 0x1
 
 #define INSTR_ECALL_EBREAK_MRET_SRET_URET_WFI_CSRRW_CSRRS_CSRRC_CSRRWI_CSRRSI_CSRRCI_SFENCEVMA 0x73
-    #define FUNC3_INSTR_ECALL_EBREAK_MRET_SRET_URET_WFI_SFENCEVMA 0x0
-        /* FUNC12 will be splitted in FUNC7 and FUNC5 */
-        #define FUNC7_INSTR_ECALL_EBREAK_URET 0x0
-            #define FUNC5_INSTR_ECALL 0x0
-            #define FUNC5_INSTR_EBREAK 0x1
-            #define FUNC5_INSTR_URET 0x2
-        #define FUNC7_INSTR_SRET_WFI 0x8
-            #define FUNC5_INSTR_SRET 0x2
-            #define FUNC5_INSTR_WFI 0x5
-        #define FUNC7_INSTR_MRET 0x18
-            #define FUNC5_INSTR_MRET 0x2
-        #define FUNC7_INSTR_SFENCEVMA 0x9
-    #define FUNC3_INSTR_CSRRW 0x1
-    #define FUNC3_INSTR_CSRRS 0x2
-    #define FUNC3_INSTR_CSRRC 0x3
-    #define FUNC3_INSTR_CSRRWI 0x5
-    #define FUNC3_INSTR_CSRRSI 0x6
-    #define FUNC3_INSTR_CSRRCI 0x7
+#define FUNC3_INSTR_ECALL_EBREAK_MRET_SRET_URET_WFI_SFENCEVMA 0x0
+/* FUNC12 will be splitted in FUNC7 and FUNC5 */
+#define FUNC7_INSTR_ECALL_EBREAK_URET 0x0
+#define FUNC5_INSTR_ECALL 0x0
+#define FUNC5_INSTR_EBREAK 0x1
+#define FUNC5_INSTR_URET 0x2
+#define FUNC7_INSTR_SRET_WFI 0x8
+#define FUNC5_INSTR_SRET 0x2
+#define FUNC5_INSTR_WFI 0x5
+#define FUNC7_INSTR_MRET 0x18
+#define FUNC5_INSTR_MRET 0x2
+#define FUNC7_INSTR_SFENCEVMA 0x9
+#define FUNC3_INSTR_CSRRW 0x1
+#define FUNC3_INSTR_CSRRS 0x2
+#define FUNC3_INSTR_CSRRC 0x3
+#define FUNC3_INSTR_CSRRWI 0x5
+#define FUNC3_INSTR_CSRRSI 0x6
+#define FUNC3_INSTR_CSRRCI 0x7
 
 #define INSTR_ADDIW_SLLIW_SRLIW_SRAIW 0x1B
-    #define FUNC3_INSTR_SLLIW 0x1
-    #define FUNC3_INSTR_SRLIW_SRAIW 0x5
-        #define FUNC7_INSTR_SRLIW 0x0
-        #define FUNC7_INSTR_SRAIW 0x20
-    #define FUNC3_INSTR_ADDIW 0x0
+#define FUNC3_INSTR_SLLIW 0x1
+#define FUNC3_INSTR_SRLIW_SRAIW 0x5
+#define FUNC7_INSTR_SRLIW 0x0
+#define FUNC7_INSTR_SRAIW 0x20
+#define FUNC3_INSTR_ADDIW 0x0
 
 #define INSTR_ADDW_SUBW_SLLW_SRLW_SRAW_MULW_DIVW_DIVUW_REMW_REMUW 0x3B
-    #define FUNC3_INSTR_ADDW_SUBW_MULW 0x0
-        #define FUNC7_INSTR_ADDW 0x00
-        #define FUNC7_INSTR_SUBW 0x20
-        #define FUNC7_INSTR_MULW 0x01
-    #define FUNC3_INSTR_SLLW 0x1
-    #define FUNC3_INSTR_DIVW 0x4
-    #define FUNC3_INSTR_SRLW_SRAW_DIVUW 0x5
-        #define FUNC7_INSTR_SRLW 0x00
-        #define FUNC7_INSTR_SRAW 0x20
-        #define FUNC7_INSTR_DIVUW 0x01
-    #define FUNC3_INSTR_REMW 0x6
-    #define FUNC3_INSTR_REMUW 0x7
+#define FUNC3_INSTR_ADDW_SUBW_MULW 0x0
+#define FUNC7_INSTR_ADDW 0x00
+#define FUNC7_INSTR_SUBW 0x20
+#define FUNC7_INSTR_MULW 0x01
+#define FUNC3_INSTR_SLLW 0x1
+#define FUNC3_INSTR_DIVW 0x4
+#define FUNC3_INSTR_SRLW_SRAW_DIVUW 0x5
+#define FUNC7_INSTR_SRLW 0x00
+#define FUNC7_INSTR_SRAW 0x20
+#define FUNC7_INSTR_DIVUW 0x01
+#define FUNC3_INSTR_REMW 0x6
+#define FUNC3_INSTR_REMUW 0x7
 
 /* Atomic Instructions */
 #define INSTR_AMO_W_D_LR_SC_SWAP_ADD_XOR_AND_OR_MIN_MAX_MINU_MAXU 0x2F
-    #define FUNC3_INSTR_W_LR_SC_SWAP_ADD_XOR_AND_OR_MIN_MAX_MINU_MAXU 0x2
-    #define FUNC3_INSTR_D_LR_SC_SWAP_ADD_XOR_AND_OR_MIN_MAX_MINU_MAXU 0x3
-        #define FUNC5_INSTR_AMO_LR 0x2
-        #define FUNC5_INSTR_AMO_SC 0x3
-        #define FUNC5_INSTR_AMO_SWAP 0x1
-        #define FUNC5_INSTR_AMO_ADD 0x0
-        #define FUNC5_INSTR_AMO_XOR 0x4
-        #define FUNC5_INSTR_AMO_AND 0xC
-        #define FUNC5_INSTR_AMO_OR 0x8
-        #define FUNC5_INSTR_AMO_MIN 0x10
-        #define FUNC5_INSTR_AMO_MAX 0x14
-        #define FUNC5_INSTR_AMO_MINU 0x18
-        #define FUNC5_INSTR_AMO_MAXU 0x1C
+#define FUNC3_INSTR_W_LR_SC_SWAP_ADD_XOR_AND_OR_MIN_MAX_MINU_MAXU 0x2
+#define FUNC3_INSTR_D_LR_SC_SWAP_ADD_XOR_AND_OR_MIN_MAX_MINU_MAXU 0x3
+#define FUNC5_INSTR_AMO_LR 0x2
+#define FUNC5_INSTR_AMO_SC 0x3
+#define FUNC5_INSTR_AMO_SWAP 0x1
+#define FUNC5_INSTR_AMO_ADD 0x0
+#define FUNC5_INSTR_AMO_XOR 0x4
+#define FUNC5_INSTR_AMO_AND 0xC
+#define FUNC5_INSTR_AMO_OR 0x8
+#define FUNC5_INSTR_AMO_MIN 0x10
+#define FUNC5_INSTR_AMO_MAX 0x14
+#define FUNC5_INSTR_AMO_MINU 0x18
+#define FUNC5_INSTR_AMO_MAXU 0x1C
 
+typedef enum INSTR_TO_EXECUTE            /* Defines an enumeration type    */
+{
+    INSTR_NOP_EX,
+    INSTR_ADD_EX,
+    INSTR_MUL_EX,
+    INSTR_SUB_EX,
+    INSTR_SLL_EX,
+    INSTR_MULH_EX,
+    INSTR_SLT_EX,
+    INSTR_MULHSU_EX,
+    INSTR_SLTU_EX,
+    INSTR_MULHU_EX,
+    INSTR_XOR_EX ,
+    INSTR_DIV_EX,
+    INSTR_SRL_EX,
+    INSTR_SRA_EX,
+    INSTR_DIVU_EX,
+    INSTR_OR_EX,
+    INSTR_REM_EX,
+    INSTR_AND_EX,
+    INSTR_REMU_EX,
+
+    /* I-Type Instructions */
+    INSTR_JALR_EX,
+    
+
+    INSTR_ADDI_EX,
+    INSTR_SLTI_EX,
+    INSTR_SLTIU_EX,
+    INSTR_XORI_EX,
+    INSTR_ORI_EX,
+    INSTR_ANDI_EX,
+    INSTR_SLLI_EX,
+    INSTR_SRLI_F7_EX,
+    INSTR_SRAI_F7_EX,
+    INSTR_SRLI_F6_EX,
+    INSTR_SRAI_F6_EX,
+
+    INSTR_LB_EX,
+    INSTR_LH_EX,
+    INSTR_LW_EX,
+    INSTR_LBU_EX,
+    INSTR_LHU_EX,
+    INSTR_LWU_EX,
+    INSTR_LD_EX,
+
+    /* S-Type Instructions */
+
+    INSTR_SB_EX,
+    INSTR_SH_EX,
+    INSTR_SW_EX,
+    INSTR_SD_EX,
+
+    /* B-Type Instructions */
+
+    INSTR_BEQ_EX,
+    INSTR_BNE_EX,
+    INSTR_BLT_EX,
+    INSTR_BGE_EX,
+    INSTR_BLTU_EX,
+    INSTR_BGEU_EX,
+
+    /* U-Type Instructions */
+    INSTR_LUI_EX,
+    INSTR_AUIPC_EX,
+
+    /* J-Type Instructions */
+    INSTR_JAL_EX,
+
+    /* System level instructions */
+    INSTR_FENCE_EX,
+    INSTR_FENCE_I_EX,
+
+
+    INSTR_ECALL_EX,
+    INSTR_EBREAK_EX,
+    INSTR_URET_EX,
+    INSTR_SRET_EX,
+    INSTR_WFI_EX,
+    INSTR_MRET_EX,
+    INSTR_SFENCEVMA_EX,
+    INSTR_CSRRW_EX ,
+    INSTR_CSRRS_EX ,
+    INSTR_CSRRC_EX ,
+    INSTR_CSRRWI_EX,
+    INSTR_CSRRSI_EX,
+    INSTR_CSRRCI_EX,
+
+    INSTR_SLLIW_EX,
+    INSTR_SRLIW_EX,
+    INSTR_SRAIW_EX,
+    INSTR_ADDIW_EX,
+
+    INSTR_ADDW_EX,
+    INSTR_SUBW_EX,
+    INSTR_MULW_EX,
+    INSTR_SLLW_EX,
+    INSTR_DIVW_EX,
+
+    INSTR_SRLW_EX,
+    INSTR_SRAW_EX,
+    INSTR_DIVUW_EX,
+    INSTR_REMW_EX,
+    INSTR_REMUW_EX,
+
+    /* Atomic Instructions */
+    INSTR_AMO_LR_EX,
+    INSTR_AMO_SC_EX,
+    INSTR_AMO_SWAP_EX,
+    INSTR_AMO_ADD_EX,
+    INSTR_AMO_XOR_EX,
+    INSTR_AMO_AND_EX,
+    INSTR_AMO_OR_EX,
+    INSTR_AMO_MIN_EX,
+    INSTR_AMO_MAX_EX,
+    INSTR_AMO_MINU_EX,
+    INSTR_AMO_MAXU_EX
+} instr_to_execute ;
 #endif /* RISCV_INSTR_H */

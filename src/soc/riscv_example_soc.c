@@ -35,7 +35,7 @@ static rv_ret memory_bus_access(void *priv, privilege_level priv_level, bus_acce
 static void rv_soc_init_mem_access_cbs(rv_soc_td *rv_soc)
 {
     int count = 0;
-    INIT_MEM_ACCESS_STRUCT(rv_soc, count++, memory_bus_access, rv_soc->ram, RAM_BASE_ADDR, RAM_SIZE_BYTES);
+   // INIT_MEM_ACCESS_STRUCT(rv_soc, count++, memory_bus_access, rv_soc->ram, RAM_BASE_ADDR, RAM_SIZE_BYTES);
     INIT_MEM_ACCESS_STRUCT(rv_soc, count++, clint_bus_access, &rv_soc->clint, CLINT_BASE_ADDR, CLINT_SIZE_BYTES);
     INIT_MEM_ACCESS_STRUCT(rv_soc, count++, plic_bus_access, &rv_soc->plic, PLIC_BASE_ADDR, PLIC_SIZE_BYTES);
     #ifdef USE_SIMPLE_UART
@@ -48,6 +48,27 @@ static void rv_soc_init_mem_access_cbs(rv_soc_td *rv_soc)
 
 static rv_ret rv_soc_bus_access(void *priv, privilege_level priv_level, bus_access_type access_type, rv_uint_xlen address, void *value, uint8_t len)
 {
+    if ((address >= RAM_BASE_ADDR) && ((address + len) <= (RAM_BASE_ADDR + RAM_SIZE_BYTES)))
+    //if ( ADDR_WITHIN_LEN(address, len, RAM_BASE_ADDR, RAM_SIZE_BYTES)  )
+    {
+        rv_soc_td *rv_soc = priv;
+        rv_uint_xlen tmp_addr = 0;
+        tmp_addr = address - RAM_BASE_ADDR;
+        //(void) priv_level;
+        uint8_t *mem_ptr = rv_soc->ram;
+
+        if(access_type == bus_write_access)
+            memcpy(&mem_ptr[tmp_addr], value, len);
+        else
+            memcpy(value, &mem_ptr[tmp_addr], len);
+
+        return rv_ok;
+        //return memory_bus_access ( rv_soc->ram,priv_level,access_type,tmp_addr, value,len);
+        //return rv_soc->mem_access_cbs[0].bus_access(rv_soc->mem_access_cbs[0].priv, priv_level, access_type, tmp_addr, value, len);
+
+    }
+    else
+    {
     rv_soc_td *rv_soc = priv;
     rv_uint_xlen tmp_addr = 0;
     size_t i = 0;
@@ -62,6 +83,7 @@ static rv_ret rv_soc_bus_access(void *priv, privilege_level priv_level, bus_acce
     }
 
     die_msg("Invalid Address, or no valid write pointer found, write not executed!: Addr: "PRINTF_FMT" Len: %d Cycle: %ld  PC: "PRINTF_FMT"\n", address, len, rv_soc->rv_core0.curr_cycle, rv_soc->rv_core0.pc);
+    }
 }
 
 void rv_soc_dump_mem(rv_soc_td *rv_soc)

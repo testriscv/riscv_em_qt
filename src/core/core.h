@@ -2,6 +2,7 @@
 #define RISCV_CORE_H
 
 #include <riscv_types.h>
+#include <riscv_instr.h>
 
 #include <csr.h>
 #include <pmp.h>
@@ -42,8 +43,9 @@ typedef struct rv_core_struct
     rv_uint_xlen sync_trap_tval;
 
     /* points to the next instruction */
-    void (*execute_cb)(rv_core_td *rv_core);
+   // void (*execute_cb)(rv_core_td *rv_core);
 
+    instr_to_execute execute_instr;
     /* externally hooked */
     void *priv;
     bus_access_func bus_access;

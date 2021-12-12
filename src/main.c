@@ -76,8 +76,15 @@ static void parse_options(int argc,
                           uint64_t *num_cycles)
 {
     int c;
-    char *arg_fw_file = NULL;
-    char *arg_dtb_file = NULL;
+    //char *arg_fw_file = "/home/user/riscv_em/riscv_em/firmware/hello_world_fw.bin";
+//    char *arg_dtb_file = NULL;
+    //char *arg_fw_file = "/home/user/riscv_em/linux_for_riscv_em/fw_payload.bin";
+    char *arg_fw_file = "/home/user/riscv_em/linux_for_riscv_em/fw_payload_nano.bin";
+    //char *arg_fw_file = "/home/user/riscv_em/linux_for_riscv_em/fw_payload_IMA.bin";
+    char *arg_dtb_file = "/home/user/riscv_em/riscv_em/dts/riscv_em32_linux.dtb";
+
+    //char *arg_fw_file  = NULL;
+//     char *arg_dtb_file  = NULL;
     char *arg_success_pc = NULL;
     char *arg_num_cycles = NULL;
 
