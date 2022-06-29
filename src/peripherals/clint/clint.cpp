@@ -33,7 +33,7 @@ static rv_int_xlen get_u8_arr_index_offs(rv_uint_xlen address)
 rv_ret clint_bus_access(void *priv, privilege_level priv_level, bus_access_type access_type, rv_uint_xlen address, void *value, uint8_t len)
 {
     (void) priv_level;
-    clint_td *clint = priv;
+    clint_td *clint = (clint_td *) priv;
     rv_uint_xlen tmp_addr = 0;
     uint8_t *tmp_u8 = (uint8_t *)clint->regs;
     rv_int_xlen arr_index_offs = -1;

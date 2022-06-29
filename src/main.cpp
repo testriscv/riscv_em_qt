@@ -43,7 +43,7 @@ char getch()
 void *uart_rx_thread(void* p)
 {
     // (void)p;
-    rv_soc_td *rv_soc = p;
+    rv_soc_td *rv_soc = (rv_soc_td *)p;
     char x = 0;
 
     printf("Uart RX Thread running...\n");

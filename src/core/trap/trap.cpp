@@ -83,7 +83,7 @@ void trap_init(trap_td *trap)
 rv_ret trap_m_write(void *priv, privilege_level curr_priv, uint16_t reg_index, rv_uint_xlen csr_val)
 {
     (void)curr_priv;
-    trap_td *trap = priv;
+    trap_td *trap = (trap_td *)priv;
     *trap->m.regs[reg_index] = csr_val;
     // printf("val written %d "PRINTF_FMT"\n", reg_index, *trap->m.regs[reg_index]);
     return rv_ok;
@@ -92,7 +92,7 @@ rv_ret trap_m_write(void *priv, privilege_level curr_priv, uint16_t reg_index, r
 rv_ret trap_m_read(void *priv, privilege_level curr_priv_mode, uint16_t reg_index, rv_uint_xlen *out_val)
 {
     (void)curr_priv_mode;
-    trap_td *trap = priv;
+    trap_td *trap =(trap_td *) priv;
     *out_val = *trap->m.regs[reg_index];
 
     // if(reg_index==trap_reg_scratch)
@@ -107,7 +107,7 @@ rv_ret trap_m_read(void *priv, privilege_level curr_priv_mode, uint16_t reg_inde
 rv_ret trap_s_write(void *priv, privilege_level curr_priv, uint16_t reg_index, rv_uint_xlen csr_val)
 {
     (void)curr_priv;
-    trap_td *trap = priv;
+    trap_td *trap =(trap_td *) priv;
     *trap->s.regs[reg_index] = csr_val;
     // printf("val written %x\n", trap->regs[internal_reg]);
     return rv_ok;
@@ -116,7 +116,7 @@ rv_ret trap_s_write(void *priv, privilege_level curr_priv, uint16_t reg_index, r
 rv_ret trap_s_read(void *priv, privilege_level curr_priv_mode, uint16_t reg_index, rv_uint_xlen *out_val)
 {
     (void)curr_priv_mode;
-    trap_td *trap = priv;
+    trap_td *trap =(trap_td *) priv;
     *out_val = *trap->s.regs[reg_index];
     return rv_ok;
 }
@@ -124,7 +124,7 @@ rv_ret trap_s_read(void *priv, privilege_level curr_priv_mode, uint16_t reg_inde
 rv_ret trap_u_write(void *priv, privilege_level curr_priv, uint16_t reg_index, rv_uint_xlen csr_val)
 {
     (void)curr_priv;
-    trap_td *trap = priv;
+    trap_td *trap =(trap_td *) priv;
     *trap->u.regs[reg_index] = csr_val;
     // printf("val written %x\n", trap->regs[internal_reg]);
     return rv_ok;
@@ -133,7 +133,7 @@ rv_ret trap_u_write(void *priv, privilege_level curr_priv, uint16_t reg_index, r
 rv_ret trap_u_read(void *priv, privilege_level curr_priv_mode, uint16_t reg_index, rv_uint_xlen *out_val)
 {
     (void)curr_priv_mode;
-    trap_td *trap = priv;
+    trap_td *trap = (trap_td *)priv;
     *out_val = *trap->u.regs[reg_index];
     return rv_ok;
 }
@@ -171,9 +171,9 @@ void trap_set_pending_bits(trap_td *trap, uint8_t ext_int, uint8_t tim_int, uint
 trap_ret trap_check_interrupt_pending(trap_td *trap, privilege_level curr_priv_mode, trap_cause_interrupt irq, privilege_level *serving_priv_level )
 {
     rv_uint_xlen interrupt_bit = (1 << irq);
-    privilege_level delegation_level = 0;
-    trap_regs_p_td *x = NULL;
-    trap_regs_p_td *deleg_register_set = NULL;
+    privilege_level delegation_level =(privilege_level) 0;
+    trap_regs_p_td *x =(trap_regs_p_td *) NULL;
+    trap_regs_p_td *deleg_register_set =(trap_regs_p_td *) NULL;
     *serving_priv_level = machine_mode;
 
     x = get_priv_regs(trap, curr_priv_mode);
@@ -187,8 +187,9 @@ trap_ret trap_check_interrupt_pending(trap_td *trap, privilege_level curr_priv_m
         return trap_ret_none;
 
     /* If we come here than there is an interrupt pending, now check if it is delegated to lower priv levels */
-    for(delegation_level=machine_mode;delegation_level>=curr_priv_mode;delegation_level--)
+    for(int delegation_level_int=(int)machine_mode;delegation_level_int>=(int)curr_priv_mode;delegation_level_int--)
     {
+        delegation_level = privilege_level(delegation_level_int);
         if(delegation_level == reserved_mode)
             continue;
 
@@ -222,13 +223,14 @@ trap_ret trap_check_interrupt_pending(trap_td *trap, privilege_level curr_priv_m
 
 privilege_level trap_check_exception_delegation(trap_td *trap, privilege_level curr_priv_mode, trap_cause_exception cause)
 {
-    privilege_level priv_index = 0;
+    privilege_level priv_index =(privilege_level) 0;
     rv_uint_xlen exception_bit = 0;
 
-    trap_regs_p_td *x = NULL;
+    trap_regs_p_td *x =(trap_regs_p_td *) NULL;
 
-    for(priv_index=machine_mode;priv_index>=user_mode;priv_index--)
+    for(int priv_index_int=(int)machine_mode;priv_index_int>=user_mode;priv_index_int--)
     {
+        priv_index = privilege_level(priv_index_int);
         if(priv_index == reserved_mode)
             continue;
 
@@ -287,7 +289,7 @@ rv_uint_xlen trap_serve_interrupt(trap_td *trap,
 
 privilege_level trap_restore_irq_settings(trap_td *trap, privilege_level serving_priv_mode)
 {
-    privilege_level previous_priv_level = 0;
+    privilege_level previous_priv_level =(privilege_level) 0;
     rv_uint_xlen pie = 0;
 
     trap_regs_p_td *x = get_priv_regs(trap, serving_priv_mode);
@@ -295,11 +297,11 @@ privilege_level trap_restore_irq_settings(trap_td *trap, privilege_level serving
     /* Restore MPP and MIE */
     if(serving_priv_mode == machine_mode)
     {
-        previous_priv_level = extractxlen(*x->regs[trap_reg_status], TRAP_XSTATUS_MPP_BIT, 2);
+        previous_priv_level =(privilege_level) extractxlen(*x->regs[trap_reg_status], TRAP_XSTATUS_MPP_BIT, 2);
     }
     else if(serving_priv_mode == supervisor_mode)
     {
-        previous_priv_level = extractxlen(*x->regs[trap_reg_status], TRAP_XSTATUS_SPP_BIT, 1);
+        previous_priv_level =(privilege_level) extractxlen(*x->regs[trap_reg_status], TRAP_XSTATUS_SPP_BIT, 1);
     }
 
     pie = (*x->regs[trap_reg_status] >> (TRAP_XSTATUS_UPIE_BIT + serving_priv_mode)) & 0x1;

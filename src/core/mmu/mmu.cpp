@@ -22,7 +22,7 @@ rv_ret mmu_read_csr(void *priv, privilege_level curr_priv_mode, uint16_t reg_ind
     (void)curr_priv_mode;
     (void) reg_index;
 
-    mmu_td *mmu = priv;
+    mmu_td *mmu =(mmu_td *) priv;
     *out_val = mmu->satp_reg;
     // printf("m read! %d %x\n", reg_index, *out_val);
     return rv_ok;
@@ -33,7 +33,7 @@ rv_ret mmu_write_csr(void *priv, privilege_level curr_priv, uint16_t reg_index, 
     (void) curr_priv;
     (void) reg_index;
 
-    mmu_td *mmu = priv;
+    mmu_td *mmu = (mmu_td *)priv;
 
     /* we only have satp to write */
     mmu->satp_reg = csr_val;
@@ -219,8 +219,8 @@ uint64_t mmu_virt_to_phys(mmu_td *mmu,
         (virt_addr >> 12) & 0x3ff,
         (virt_addr >> 22) & 0x3ff
     };
-    // MMU_DEBUG("vpn[1] "PRINTF_FMT"\n", vpn[1]);
-    // MMU_DEBUG("vpn[0] "PRINTF_FMT"\n", vpn[0]);
+    // MMU_DEBUG("vpn[1] " PRINTF_FMT  "\n", vpn[1]);
+    // MMU_DEBUG("vpn[0] " PRINTF_FMT  "\n", vpn[0]);
 
     /*
      * 1. Let a be satp.ppn × PAGESIZE, and let i = LEVELS − 1. (For Sv32, PAGESIZE=2^12 and LEVELS=2.) 
@@ -235,13 +235,13 @@ uint64_t mmu_virt_to_phys(mmu_td *mmu,
         * If accessing pte violates a PMA or PMP check, raise an access exception.
         */
         pte_addr = a + (vpn[i] * SV32_PTESIZE);
-        MMU_DEBUG("address a: " PRINTF_FMT " pte_addr: "PRINTF_FMT"\n", a, pte_addr);
+        MMU_DEBUG("address a: " PRINTF_FMT " pte_addr: " PRINTF_FMT "\n", a, pte_addr);
 
         /* Here we should raise an exception if PMP violation occurs, will be done automatically
          * if read_mem is set to the "checked_read_mem()" function.
          */
         mmu->bus_access(mmu->priv, curr_priv, bus_read_access, pte_addr, &pte, sizeof(rv_uint_xlen));
-        MMU_DEBUG("pte[%d] "PRINTF_FMT"\n", i, pte);
+        MMU_DEBUG("pte[%d] " PRINTF_FMT "\n", i, pte);
         pte_flags = pte;
 
         /* 
@@ -249,8 +249,10 @@ uint64_t mmu_virt_to_phys(mmu_td *mmu,
          */
         if( (!(pte_flags & MMU_PAGE_VALID)) || ((!(pte_flags & MMU_PAGE_READ)) && (pte_flags & MMU_PAGE_WRITE)) )
         {
-            MMU_DEBUG("page fault: pte.v = 0, or if pte.r = 0 and pte.w = 1 access_type: %d a: "PRINTF_FMT" virt_addr: "PRINTF_FMT" pte: "PRINTF_FMT" pte_addr: "PRINTF_FMT" flags: %x curr_priv: %d level: %d pc: "PRINTF_FMT" value: "PRINTF_FMT"\n", access_type, a, virt_addr, pte, pte_addr, pte_flags, curr_priv, i, rv_core->pc, value);
-            goto exit_page_fault;
+            MMU_DEBUG("page fault: pte.v = 0, or if pte.r = 0 and pte.w = 1 access_type: %d a: " PRINTF_FMT " virt_addr: " PRINTF_FMT " pte: " PRINTF_FMT " pte_addr: " PRINTF_FMT " flags: %x curr_priv: %d level: %d pc: " PRINTF_FMT  " value: " PRINTF_FMT  "\n", access_type, a, virt_addr, pte, pte_addr, pte_flags, curr_priv, i, rv_core->pc, value);
+            //goto exit_page_fault;
+            *ret_val = mmu_page_fault;
+            return 0;
         }
 
         /*
@@ -271,7 +273,9 @@ uint64_t mmu_virt_to_phys(mmu_td *mmu,
     if(i<0)
     {
         MMU_DEBUG("page fault: i < 0\n");
-        goto exit_page_fault;
+    //    goto exit_page_fault;
+        *ret_val = mmu_page_fault;
+        return 0;
     }
 
     /*
@@ -285,14 +289,18 @@ uint64_t mmu_virt_to_phys(mmu_td *mmu,
     if ( (curr_priv == user_mode) && !user_page)
     {
         printf("page fault: user access to higher priv page!\n");
-        goto exit_page_fault;
+     //   goto exit_page_fault;
+        *ret_val = mmu_page_fault;
+        return 0;
     }
 
     /* Supervisor only has access to user pages if SUM = 1 */
     if( (curr_priv == supervisor_mode) && user_page && !sum )
     {
         MMU_DEBUG("page fault: supervisor access to user page!\n");
-        goto exit_page_fault;
+     //   goto exit_page_fault;
+        *ret_val = mmu_page_fault;
+        return 0;
     }
 
     /* Check if MXR */
@@ -302,7 +310,9 @@ uint64_t mmu_virt_to_phys(mmu_td *mmu,
     if(!(ACCESS_TYPE_TO_MMU(access_type) & pte_flags ))
     {
         MMU_DEBUG("page fault: invalid RWX flags!\n");
-        goto exit_page_fault;
+      //  goto exit_page_fault;
+        *ret_val = mmu_page_fault;
+        return 0;
     }
 
     pte = pte << SV32_PTESHIFT;
@@ -328,7 +338,9 @@ uint64_t mmu_virt_to_phys(mmu_td *mmu,
     if(i > 0 && ppn[i-1] != 0)
     {
         MMU_DEBUG("misaligned superpage!\n");
-        goto exit_page_fault;
+     //   goto exit_page_fault;
+        *ret_val = mmu_page_fault;
+        return 0;
     }
 
     #if 1
@@ -341,7 +353,9 @@ uint64_t mmu_virt_to_phys(mmu_td *mmu,
         if( (!(pte_flags & MMU_PAGE_ACCESSED)) || ((access_type == bus_write_access) && !(pte_flags & MMU_PAGE_DIRTY)) )
         {
             // printf("pta.a or pte.d page fault!\n");
-            goto exit_page_fault;
+        //    goto exit_page_fault;
+            *ret_val = mmu_page_fault;
+            return 0;
         }
     #endif
 
@@ -359,7 +373,7 @@ uint64_t mmu_virt_to_phys(mmu_td *mmu,
 
     return phys_addr_translation[i];
 
-    exit_page_fault:
+  //  exit_page_fault:
         // printf("page fault!!!\n");
         *ret_val = mmu_page_fault;
         return 0;
@@ -368,7 +382,7 @@ uint64_t mmu_virt_to_phys(mmu_td *mmu,
 
 void mmu_dump(mmu_td *mmu)
 {
-    printf("satp_reg: " PRINTF_FMT"\n", mmu->satp_reg);
+    printf("satp_reg: " PRINTF_FMT "\n", mmu->satp_reg);
 }
 
 void mmu_init(mmu_td *mmu, bus_access_func bus_access, void *priv)

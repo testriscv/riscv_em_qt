@@ -1,6 +1,6 @@
 QT -= gui core
 
-CONFIG += c++11 console
+CONFIG +=  console
 CONFIG -= app_bundle
 
 # The following define makes your compiler emit warnings if you use
@@ -17,19 +17,19 @@ DEFINES += NDEBUG
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    ../src/core/core.c \
-    ../src/core/csr/csr.c \
-    ../src/core/mmu/mmu.c \
-    ../src/core/pmp/pmp.c \
-    ../src/core/trap/trap.c \
-    ../src/helpers/fifo.c \
-    ../src/helpers/file_helper.c \
-    ../src/main.c \
-    ../src/peripherals/clint/clint.c \
-    ../src/peripherals/plic/plic.c \
-    ../src/peripherals/uart/simple_uart.c \
-    ../src/peripherals/uart/uart_8250.c \
-    ../src/soc/riscv_example_soc.c
+    ../src/core/core.cpp \
+    ../src/core/csr/csr.cpp \
+    ../src/core/mmu/mmu.cpp \
+    ../src/core/pmp/pmp.cpp \
+    ../src/core/trap/trap.cpp \
+    ../src/helpers/fifo.cpp \
+    ../src/helpers/file_helper.cpp \
+    ../src/main.cpp \
+    ../src/peripherals/clint/clint.cpp \
+    ../src/peripherals/plic/plic.cpp \
+    ../src/peripherals/uart/simple_uart.cpp \
+    ../src/peripherals/uart/uart_8250.cpp \
+    ../src/soc/riscv_example_soc.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

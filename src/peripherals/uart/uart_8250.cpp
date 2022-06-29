@@ -56,9 +56,9 @@ void uart_init(uart_ns8250_td *uart)
 rv_ret uart_bus_access(void *priv, privilege_level priv_level, bus_access_type access_type, rv_uint_xlen address, void *value, uint8_t len)
 {
     (void) priv_level;
-    uart_ns8250_td *uart = priv;
+    uart_ns8250_td *uart =( uart_ns8250_td *) priv;
     uint8_t tmp = 0;
-    rv_uint_xlen *outval = value;
+    rv_uint_xlen *outval =(rv_uint_xlen *) value;
     uint8_t val_u8 = 0;
     uint8_t tmp_bits = 0;
 
@@ -263,7 +263,7 @@ rv_ret uart_bus_access(void *priv, privilege_level priv_level, bus_access_type a
 
 uint8_t uart_update(void *priv)
 {
-    uart_ns8250_td *uart = priv;
+    uart_ns8250_td *uart = (uart_ns8250_td *)priv;
     int i = 0;
     uint8_t tmp_char = 0;
     uint8_t tmp_fifo_len = 0;

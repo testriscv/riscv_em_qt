@@ -145,7 +145,7 @@ uint8_t plic_update(plic_td *plic)
 rv_ret plic_bus_access(void *priv, privilege_level priv_level, bus_access_type access_type, rv_uint_xlen address, void *value, uint8_t len)
 {
     (void) priv_level;
-    plic_td *plic = priv;
+    plic_td *plic =(plic_td *) priv;
     uint8_t is_claim_complete = 0;
     uint32_t irq_reg = 0;
     uint32_t irq_bit = 0;

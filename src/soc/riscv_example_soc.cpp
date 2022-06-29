@@ -2,7 +2,9 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
+#include <stdint.h>
 #include <riscv_helper.h>
 #include <riscv_example_soc.h>
 
@@ -22,7 +24,7 @@
 static rv_ret memory_bus_access(void *priv, privilege_level priv_level, bus_access_type access_type, rv_uint_xlen address, void *value, uint8_t len)
 {
     (void) priv_level;
-    uint8_t *mem_ptr = priv;
+    uint8_t *mem_ptr = (uint8_t *) priv;
 
     if(access_type == bus_write_access)
         memcpy(&mem_ptr[address], value, len);
@@ -51,7 +53,7 @@ static rv_ret rv_soc_bus_access(void *priv, privilege_level priv_level, bus_acce
     if ((address >= RAM_BASE_ADDR) && ((address + len) <= (RAM_BASE_ADDR + RAM_SIZE_BYTES)))
     //if ( ADDR_WITHIN_LEN(address, len, RAM_BASE_ADDR, RAM_SIZE_BYTES)  )
     {
-        rv_soc_td *rv_soc = priv;
+        rv_soc_td *rv_soc = (rv_soc_td *) priv;
         rv_uint_xlen tmp_addr = 0;
         tmp_addr = address - RAM_BASE_ADDR;
         //(void) priv_level;
@@ -69,9 +71,9 @@ static rv_ret rv_soc_bus_access(void *priv, privilege_level priv_level, bus_acce
     }
     else
     {
-    rv_soc_td *rv_soc = priv;
+    rv_soc_td *rv_soc = (rv_soc_td *) priv;
     rv_uint_xlen tmp_addr = 0;
-    size_t i = 0;
+    int  i = 0;
 
     for(i=0;i<(sizeof(rv_soc->mem_access_cbs)/sizeof(rv_soc->mem_access_cbs[0]));i++)
     {
@@ -82,7 +84,7 @@ static rv_ret rv_soc_bus_access(void *priv, privilege_level priv_level, bus_acce
         }
     }
 
-    die_msg("Invalid Address, or no valid write pointer found, write not executed!: Addr: "PRINTF_FMT" Len: %d Cycle: %ld  PC: "PRINTF_FMT"\n", address, len, rv_soc->rv_core0.curr_cycle, rv_soc->rv_core0.pc);
+    die_msg("Invalid Address, or no valid write pointer found, write not executed!: Addr: " PRINTF_FMT" Len: %d Cycle: %ld  PC: " PRINTF_FMT"\n", address, len, rv_soc->rv_core0.curr_cycle, rv_soc->rv_core0.pc);
     }
 }
 
@@ -117,7 +119,7 @@ void rv_soc_init(rv_soc_td *rv_soc, char *fw_file_name, char *dtb_file_name)
     rv_soc->ram = soc_ram;
 
     /* Copy dtb and firmware */
-    if(dtb_file_name != NULL)
+    if(dtb_file_name != (char *) nullptr)
     {
         fdt_size = get_file_size(dtb_file_name);
 
@@ -162,7 +164,7 @@ void rv_soc_init(rv_soc_td *rv_soc, char *fw_file_name, char *dtb_file_name)
     }
 
     /* initialize one core with a csr table */
-    rv_core_init(&rv_soc->rv_core0, rv_soc, rv_soc_bus_access);
+    rv_soc->rv_core0.rv_core_init(/*&rv_soc->rv_core0,*/ rv_soc, rv_soc_bus_access);
 
     #ifdef USE_SIMPLE_UART
         simple_uart_init(&rv_soc->uart);
@@ -181,11 +183,11 @@ void rv_soc_run(rv_soc_td *rv_soc, rv_uint_xlen success_pc, uint64_t num_cycles)
     uint8_t mei = 0, msi = 0, mti = 0;
     uint8_t uart_irq_pending = 0;
 
-    rv_core_reg_dump(&rv_soc->rv_core0);
+   rv_soc->rv_core0.rv_core_reg_dump(/*&rv_soc->rv_core0*/);
 
     while(1)
     {
-        rv_core_run(&rv_soc->rv_core0);
+        rv_soc->rv_core0.rv_core_run(/*&rv_soc->rv_core0*/);
 
         /* update peripherals */
         #ifdef USE_SIMPLE_UART
@@ -202,9 +204,9 @@ void rv_soc_run(rv_soc_td *rv_soc, rv_uint_xlen success_pc, uint64_t num_cycles)
         clint_update(&rv_soc->clint, &msi, &mti);
 
         /* update CSRs for actual interrupt processing */
-        rv_core_process_interrupts(&rv_soc->rv_core0, mei, mti, msi);
+        rv_soc->rv_core0.rv_core_process_interrupts(/*&rv_soc->rv_core0,*/ mei, mti, msi);
 
-        rv_core_reg_dump(&rv_soc->rv_core0);
+        rv_soc->rv_core0.rv_core_reg_dump(/*&rv_soc->rv_core0*/);
 
         if(rv_soc->rv_core0.pc == success_pc)
             break;

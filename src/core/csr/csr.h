@@ -121,9 +121,9 @@
     _csr[_index].access_flags = _access_flags; \
     _csr[_index].value = _init_val; \
     _csr[_index].mask = _MASK; \
-    _csr[_index].priv = NULL; \
-    _csr[_index].read_cb = NULL; \
-    _csr[_index].write_cb = NULL; \
+    _csr[_index].priv = nullptr; \
+    _csr[_index].read_cb = nullptr; \
+    _csr[_index].write_cb = nullptr; \
     _csr[_index].internal_reg = 0; }
 
 #define INIT_CSR_REG_SPECIAL(_csr, _index, _access_flags, _MASK, _priv, _read_cb, _write_cb, _internal_reg) { \

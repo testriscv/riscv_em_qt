@@ -30,7 +30,7 @@ void simple_uart_init(simple_uart_td *uart)
 rv_ret simple_uart_bus_access(void *priv, privilege_level priv_level, bus_access_type access_type, rv_uint_xlen address, void *value, uint8_t len)
 {
     (void) priv_level;
-    simple_uart_td *uart = priv;
+    simple_uart_td *uart = (simple_uart_td *)priv;
     uint8_t val_u8 = 0;
 
     if(len != 1)
@@ -88,7 +88,7 @@ rv_ret simple_uart_bus_access(void *priv, privilege_level priv_level, bus_access
 
 uint8_t simple_uart_update(void *priv)
 {
-    simple_uart_td *uart = priv;
+    simple_uart_td *uart = (simple_uart_td *)priv;
     uint8_t irq_trigger = 0;
     uint8_t tmp_fifo_len = 0;
     uint8_t tmp_char = 0;

@@ -15,7 +15,7 @@
 rv_ret pmp_write_csr_cfg(void *priv, privilege_level curr_priv, uint16_t reg_index, rv_uint_xlen csr_val)
 {
     uint8_t i = 0;
-    pmp_td *pmp = priv;
+    pmp_td *pmp =(pmp_td *) priv;
     uint8_t *cfg_ptr = (uint8_t *)&pmp->cfg[reg_index];
     uint8_t *new_val_ptr = (uint8_t *)&csr_val;
 
@@ -39,14 +39,14 @@ rv_ret pmp_read_csr_cfg(void *priv, privilege_level curr_priv, uint16_t reg_inde
 {
     (void) curr_priv;
 
-    pmp_td *pmp = priv;
+    pmp_td *pmp = (pmp_td *)priv;
     *out_val = pmp->cfg[reg_index];
     return rv_ok;
 }
 
 rv_ret pmp_write_csr_addr(void *priv, privilege_level curr_priv, uint16_t reg_index, rv_uint_xlen csr_val)
 {
-    pmp_td *pmp = priv;
+    pmp_td *pmp =(pmp_td *) priv;
     uint8_t cfg_reg_idx = reg_index/sizeof(rv_uint_xlen);
     uint8_t cfg_idx = reg_index%sizeof(rv_uint_xlen);
     uint8_t *cfg_ptr = (uint8_t *)&pmp->cfg[cfg_reg_idx];
@@ -59,7 +59,7 @@ rv_ret pmp_write_csr_addr(void *priv, privilege_level curr_priv, uint16_t reg_in
     /* check if the next index is locked and set to tor */
     if(cfg_idx < (PMP_NR_ADDR_REGS-1))
     {
-        addr_mode_next_entry = extract8(cfg_ptr[cfg_idx+1], PMP_CFG_A_BIT_OFFS, 2);
+        addr_mode_next_entry = (pmp_addr_matching)extract8(cfg_ptr[cfg_idx+1], PMP_CFG_A_BIT_OFFS, 2);
         if( (addr_mode_next_entry == pmp_a_tor) &&
             CHECK_BIT(cfg_ptr[cfg_idx+1], PMP_CFG_L_BIT) )
         {
@@ -84,7 +84,7 @@ rv_ret pmp_read_csr_addr(void *priv, privilege_level curr_priv, uint16_t reg_ind
 {
     (void) curr_priv;
 
-    pmp_td *pmp = priv;
+    pmp_td *pmp =(pmp_td *) priv;
     *out_val = pmp->addr[reg_index];
     return rv_ok;
 }
@@ -109,7 +109,7 @@ rv_ret pmp_mem_check(pmp_td *pmp, privilege_level curr_priv, rv_uint_xlen addr, 
     uint8_t i = 0;
     uint8_t j = 0;
     uint8_t addr_count = 0;
-    uint8_t *cfg_ptr = NULL;
+    uint8_t *cfg_ptr =(uint8_t *) NULL;
     pmp_addr_matching addr_mode = pmp_a_off;
     rv_uint_xlen addr_end = 0;
     rv_uint_xlen pmp_addr_start = 0;
@@ -133,8 +133,8 @@ rv_ret pmp_mem_check(pmp_td *pmp, privilege_level curr_priv, rv_uint_xlen addr, 
                 continue;
 
             addr_count = (i*sizeof(pmp->cfg[0])) + j;
-            PMP_DEBUG("pmpaddr: "PRINTF_FMT"\n", pmp->addr[addr_count]);
-            addr_mode = extract8(cfg_ptr[j], PMP_CFG_A_BIT_OFFS, 2);
+            PMP_DEBUG("pmpaddr: " PRINTF_FMT"\n", pmp->addr[addr_count]);
+            addr_mode = (pmp_addr_matching ) extract8(cfg_ptr[j], PMP_CFG_A_BIT_OFFS, 2);
 
             PMP_DEBUG("id: %d addr_mode: %x\n", j, addr_mode);
 
